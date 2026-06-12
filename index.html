@@ -22,16 +22,17 @@
 
         // دالة جديدة لاستخراج الرابط الهدف من شريط العنوان
         function getDynamicRedirectUrl() {
-            const currentUrl = window.location.href;
-            // البحث عن المقطع /go/ في الرابط لقص ما بعده
-            const parts = currentUrl.split('/go/');
+            // جلب المتغيرات من الرابط
+            const urlParams = new URLSearchParams(window.location.search);
+            // استخراج قيمة المتغير 'url'
+            const target = urlParams.get('url');
             
-            // التحقق مما إذا كان هناك رابط مضاف بعد /go/ ويبدأ بـ http
-            if (parts.length > 1 && parts[1].startsWith('http')) {
-                return parts[1]; // إرجاع الرابط الذي قمت بإضافته
+            // التحقق مما إذا كان الرابط موجوداً ويبدأ بـ http
+            if (target && target.startsWith('http')) {
+                return target; 
             }
             
-            // الرابط الافتراضي في حال فتحت الصفحة بدون تحديد مسار إضافي
+            // الرابط الافتراضي في حال فتحت الصفحة بدون تحديد رابط إضافي
             return "https://www.google.com/maps";
         }
 
